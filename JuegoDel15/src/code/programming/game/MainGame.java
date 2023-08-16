@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class MainGame {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 			try (Scanner in = new Scanner(System.in)) {
 				System.out.println("Bienvenido al juego del 15 donde tendrás como objetivo organizar los números del 1 al 15\n"
 						+ "en orden ascendente en la matriz");
@@ -16,16 +15,23 @@ public class MainGame {
 				System.out.println("Escribe el número que quieres mover de posición:");
 				String guess = in.nextLine();
 				while (finish != "JUEGO COMPLETADO") {
-					System.out.println(game.foundIfSelectNumberCanUse(guess));
-					System.out.println("Escribe el número que quieres mover de posición:");
-					guess = in.nextLine();
-					if (game.foundIfSelectNumberCanUse(guess).equals(game.ascendingOrderMatrix())) {
-						finish = "JUEGO COMPLETADO";
-						System.out.println(finish);
+					if (game.foundIfSelectNumberCanUse(guess) == true) {
+						game.changeSpaceToNumberSelect(guess);
+						if(game.ascendingOrderMatrix() == true) {
+							finish = "JUEGO COMPLETADO";
+							System.out.println(finish);
+						} else {
+							System.out.println("Escribe el número que quieres mover de posición:");
+						    guess = in.nextLine();
+						}
+					} else {
+						System.out.println("numero invalido, intente nuevamente");
+						System.lineSeparator();
+						System.out.println("Escribe el número que quieres mover de posición:");
+					    guess = in.nextLine();
 					}
-					System.out.println(game.foundIfSelectNumberCanUse(guess));
+
 				}
 			}
 		}
-
 }
