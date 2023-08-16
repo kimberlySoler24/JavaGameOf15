@@ -5,8 +5,6 @@ import java.util.Random;
 
 public class GameOf15 {
 
-	
-	//JUEGO DEL 15
 	// ATRIBUTO
 	private String[][] matrix;
 
@@ -17,10 +15,8 @@ public class GameOf15 {
 	// CONSTRUCTOR
 	public GameOf15() {
 		Random random = new Random();
-		this.matrix = new String[][] { { "01", "02", "03", "04" }, 
-			                           { "05", "06", "07", "08" },
-				                       { "09", "10", "11", "12" }, 
-				                       { "13", "14", "15", "  " } };
+		this.matrix = new String[][] { { "01", "02", "03", "04" }, { "05", "06", "07", "08" },
+				{ "09", "10", "11", "12" }, { "13", "14", "15", "  " } };
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix[i].length; j++) {
 				int row = random.nextInt(3);
@@ -46,64 +42,51 @@ public class GameOf15 {
 		return builder.toString();
 	}
 
-	public String foundIfSelectNumberCanUse(String number) {
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix[i].length; j++) {
-				if (matrix[i][j] == "  ") {
-					var beforeI = i - 1;
-					var afterI = i + 1;
-					var beforeJ = j - 1;
-					var afterJ = j + 1;
-					if (beforeI >= 0) {
-						if (matrix[beforeI][j].equals(number)){
-							return changeSpaceToNumberSelect(number);
-						}
-					}
-					if (afterI <= matrix.length - 1) {
-						if (matrix[afterI][j].equals(number)){
-							return changeSpaceToNumberSelect(number);
-						}
-					}
-					if (beforeJ >= 0) {
-						if (matrix[i][beforeJ].equals(number)){
-							return changeSpaceToNumberSelect( number);
-						}
-					}
-					if (afterJ <= matrix.length - 1) {
-						if (matrix[i][afterJ].equals(number)){
-							return changeSpaceToNumberSelect(number);
-						}
+	public boolean foundIfSelectNumberCanUse(String number) {
+		var correctNumber = false;
+		for (int row = 0; row < matrix.length; row++) {
+			for (int col = 0; col < matrix[row].length; col++) {
+				if (matrix[row][col] == "  ") {
+					if (row - 1 >= 0 && matrix[row - 1][col].equals(number) 
+						|| row + 1 <= matrix.length - 1 && matrix[row + 1][col].equals(number)
+						|| col - 1 >= 0 && matrix[row][col - 1].equals(number)
+						|| col + 1 <= matrix.length - 1 && matrix[row][col + 1].equals(number)) {
+						correctNumber = true;
 					}
 				}
 			}
 		}
-		return "El numero invalido, intente nuevamente";
+		return correctNumber;
 	}
 
-	public String changeSpaceToNumberSelect(String number) {
+	public void changeSpaceToNumberSelect(String number) {
 		var copyOfMatrix = Arrays.copyOf(matrix, matrix.length);
-		for (int i = 0; i < copyOfMatrix.length; i++) {
-			for (int j = 0; j < copyOfMatrix[i].length; j++) {
-				if (copyOfMatrix[i][j].equals("  ")) {
-					copyOfMatrix[i][j] = number;
+		for (int row = 0; row < copyOfMatrix.length; row++) {
+			for (int col = 0; col < copyOfMatrix[row].length; col++) {
+				if (copyOfMatrix[row][col].equals("  ")) {
+					copyOfMatrix[row][col] = number;
 				} else {
-					if (copyOfMatrix[i][j].equals(number)) {
-						copyOfMatrix[i][j] = "  ";
+					if (copyOfMatrix[row][col].equals(number)) {
+						copyOfMatrix[row][col] = "  ";
 					}
 				}
 			}
 		}
-		return matrixToString(copyOfMatrix);
+		System.out.println(matrixToString(copyOfMatrix));
 	}
-	
-	public String ascendingOrderMatrix() {
-		var ascendingOrderMatrix = new String[][] { { "01", "02", "03", "04" }, 
-            { "05", "06", "07", "08" },
-            { "09", "10", "11", "12" }, 
-            { "13", "14", "15", "  " } };
-        return matrixToString(ascendingOrderMatrix);
+
+	public boolean ascendingOrderMatrix() {
+		var correctOrder = false;
+		var orderMatrix = new String[][] { { "01", "02", "03", "04" }, 
+													{ "05", "06", "07", "08" },
+													{ "09", "10", "11", "12" }, 
+													{ "13", "14", "15", "  " } };
+		if (orderMatrix.equals(matrix)) {
+			correctOrder = true;
+		} 
+		return correctOrder;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -123,6 +106,5 @@ public class GameOf15 {
 		GameOf15 other = (GameOf15) obj;
 		return Arrays.deepEquals(matrix, other.matrix);
 	}
-
 
 }
